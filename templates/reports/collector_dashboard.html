@@ -1,0 +1,361 @@
+{% extends "base.html" %}
+
+{% block title %}Collector Dashboard - EcoWaste{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 w-full">
+    <!-- Sidebar -->
+    <div class="lg:col-span-1 bg-white/90 backdrop-blur-sm p-4 sm:p-6 rounded-3xl shadow-xl border border-gray-100 h-fit sticky top-24">
+        <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            Collector Menu
+        </h3>
+        <ul class="space-y-2 sm:space-y-3">
+            <li><a href="{% url 'collector_dashboard' %}" class="text-blue-700 font-bold block p-2 sm:p-3 bg-gradient-to-r from-blue-100 to-blue-50 rounded-xl shadow-sm transition-transform hover:-translate-y-0.5 text-sm sm:text-base">Dashboard Feed</a></li>
+            <li><a href="#collection-history" class="text-gray-600 hover:text-blue-600 font-medium block p-2 sm:p-3 hover:bg-gray-50 rounded-xl transition-all text-sm sm:text-base">History</a></li>
+            <li class="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-100">
+                <div class="bg-gradient-to-br from-blue-500 to-indigo-500 p-3 sm:p-4 rounded-xl text-white shadow-md transform hover:scale-105 transition-transform">
+                    <p class="text-xs sm:text-sm font-medium opacity-90">Total Points</p>
+                    <p class="text-2xl sm:text-3xl font-black">{{ user.points }}</p>
+                </div>
+            </li>
+
+            <!-- Collecting Guidelines Section -->
+            <li class="mt-6 sm:mt-8 pt-2">
+                <div class="bg-gradient-to-br from-gray-50 to-stone-50 p-4 sm:p-5 rounded-2xl border border-gray-200">
+                    <h4 class="text-sm sm:text-base font-bold text-gray-800 mb-3 sm:mb-4 flex items-center">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Collecting Guidelines
+                    </h4>
+                    <ul class="space-y-2 sm:space-y-3 text-xs sm:text-sm text-gray-700">
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5">
+                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </span>
+                            <span class="leading-relaxed">Verify waste type and quantity before collection.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5">
+                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </span>
+                            <span class="leading-relaxed">Document collection with detailed notes for admin review.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="flex-shrink-0 w-5 h-5 sm:w-6 sm:h-6 bg-blue-100 rounded-full flex items-center justify-center mr-2 sm:mr-3 mt-0.5">
+                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                            </span>
+                            <span class="leading-relaxed">Handle hazardous materials with proper safety equipment.</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:col-span-3 space-y-6 sm:space-y-8">
+        
+        <!-- Stats and Greeting Row -->
+        <div class="flex flex-col md:flex-row justify-between gap-8" data-aos="fade-up">
+            <div class="flex-grow">
+                <h1 class="text-3xl font-black text-gray-900">Collection Dashboard</h1>
+                <p class="text-gray-500 font-medium mt-1">Help keep our cities clean, and rack up reward points! 🌍</p>
+            </div>
+
+            <!-- Small Stats Dashboard Box for Collector -->
+            {% if my_collections %}
+            <div class="glass-card rounded-2xl border border-gray-100 shadow-lg p-4 flex gap-6 items-center" data-aos="fade-left">
+                <div class="relative w-24 h-24">
+                    <canvas id="collectorPerfChart"></canvas>
+                </div>
+                <div>
+                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Performance</p>
+                    <div class="flex flex-col gap-0.5">
+                        <span class="text-sm font-bold text-gray-700 flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500"></div> Verified</span>
+                        <span class="text-sm font-bold text-gray-700 flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-blue-500"></div> Pending</span>
+                        <span class="text-sm font-bold text-gray-700 flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-red-500"></div> Rejected</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Available Waste -->
+        <div class="bg-white/90 backdrop-blur-sm p-8 rounded-3xl shadow-xl border border-gray-100 relative overflow-hidden" data-aos="fade-up" data-aos-delay="100">
+            <div class="absolute -top-24 -right-24 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply opacity-40 blur-3xl"></div>
+            
+            <div class="flex justify-between items-center mb-8 relative z-10">
+                <h2 class="text-2xl font-black text-gray-900 flex items-center">
+                    <div class="p-2.5 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-xl text-white mr-3 shadow-lg shadow-blue-500/20">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    Open for Pickup
+                </h2>
+                <span class="bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full text-xs font-bold border border-blue-100">{{ pending_reports.count }} available</span>
+            </div>
+            
+            {% if pending_reports %}
+                <div class="grid grid-cols-1 gap-6 relative z-10">
+                    {% for report in pending_reports %}
+                        <div class="group relative bg-white border-2 border-gray-50 rounded-3xl p-6 transition-all duration-300 hover:shadow-2xl hover:border-blue-200 transform hover:-translate-y-1 overflow-hidden" data-aos="fade-up">
+                            <div class="absolute top-0 right-0 bg-yellow-400 text-white text-[10px] font-black tracking-widest px-4 py-1 rounded-bl-2xl transform transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">NEW</div>
+                            
+                            <div class="flex flex-col lg:flex-row gap-6">
+                                <!-- Report Info -->
+                                <div class="lg:w-2/5">
+                                    <h3 class="text-xl font-black text-gray-900 mb-1">{{ report.get_waste_type_display }}</h3>
+                                    
+                                    <div class="space-y-3 mt-3">
+                                        <div class="flex items-start text-sm text-gray-600 bg-gray-50 p-3 rounded-xl">
+                                            <svg class="w-5 h-5 text-blue-400 mr-2 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                            <div>
+                                                <span class="block font-bold text-gray-900">Address:</span>
+                                                {{ report.location }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="flex items-center justify-between px-2 text-sm font-medium text-gray-500">
+                                            <span class="flex items-center gap-1"><svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg> Qty: <strong class="text-gray-700">{{ report.amount }}</strong></span>
+                                            <span class="text-xs">{{ report.created_at|timesince }} ago</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Action Side -->
+                                <div class="lg:w-3/5 bg-gray-50/50 rounded-2xl p-5 border border-gray-100">
+                                    <form method="POST" class="space-y-4 action-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="report_id" value="{{ report.id }}">
+                                        <div>
+                                            <label class="block text-xs font-black text-gray-500 uppercase tracking-wider mb-1.5">Collection Notes / Action Taken</label>
+                                            {{ form.content }}
+                                        </div>
+                                        <div class="flex gap-3">
+                                            <button type="submit" class="submit-action-btn w-full group flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-blue-600/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95">
+                                                <span>Log Collection</span>
+                                                <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                            </button>
+                                            <button type="submit" name="ignore_report" value="1" class="group flex items-center justify-center px-4 py-3.5 rounded-xl border border-gray-200 text-gray-400 hover:text-red-500 hover:border-red-200 hover:bg-red-50 transition-all duration-300" title="Ignore this report">
+                                                <svg class="w-5 h-5 transition-transform group-hover:scale-110" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-16 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 relative z-10" data-aos="zoom-in">
+                    <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                        <svg class="h-10 w-10 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800">All Caught Up!</h3>
+                    <p class="mt-1 text-sm text-gray-500">There are currently no pending waste reports.</p>
+                </div>
+            {% endif %}
+        </div>
+        
+        <!-- My Collections History -->
+        <div id="collection-history" class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-black text-gray-900 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    Collection Log
+                </h2>
+                {% if my_collections %}
+                <span class="text-xs font-black bg-gray-100 px-3 py-1.5 rounded-full text-gray-500">{{ my_collections.count }} entries</span>
+                {% endif %}
+            </div>
+            
+            {% if my_collections %}
+                <div class="grid grid-cols-1 gap-4 relative">
+                    {% for item in my_collections %}
+                        <div class="group relative bg-gray-50 hover:bg-white border border-gray-100 hover:border-blue-200 rounded-2xl transition-all duration-300 hover:shadow-md" data-aos="fade-up" data-aos-anchor-placement="top-bottom" x-data="{ expanded: false }">
+                            
+                            <!-- Clickable Header -->
+                            <div @click="expanded = !expanded" class="p-5 cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-4">
+                                <div class="flex-grow">
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <h4 class="text-lg font-extrabold text-gray-900 group-hover:text-blue-700 transition-colors">{{ item.get_waste_type_display }}</h4>
+                                        <span class="text-gray-300 font-light text-sm">•</span>
+                                        <p class="text-xs text-gray-500 font-bold tracking-wider">{{ item.updated_at|date:"M d, g:i a" }}</p>
+                                    </div>
+                                    <p class="text-sm text-gray-500 font-medium flex items-center">
+                                        <svg class="w-4 h-4 mr-1 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                                        {{ item.location|truncatewords:8 }}
+                                    </p>
+                                </div>
+
+                                <div class="shrink-0 flex items-center gap-3">
+                                    {% if item.status == 'COLLECTED' %}
+                                        <div class="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 text-xs font-black border border-blue-100">
+                                            <span class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-ping mr-2"></span>
+                                            PENDING REVIEW
+                                        </div>
+                                    {% elif item.status == 'VERIFIED' %}
+                                        <div class="inline-flex items-center px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-black border border-emerald-100">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+                                            SUCCESS
+                                        </div>
+                                    {% elif item.status == 'REJECTED' %}
+                                        <div class="inline-flex items-center px-3 py-1.5 rounded-full bg-red-50 text-red-700 text-xs font-black border border-red-100">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                            REJECTED
+                                        </div>
+                                    {% endif %}
+                                    
+                                    <!-- Expand/Collapse Icon -->
+                                    <div>
+                                        <svg class="w-5 h-5 text-gray-400 transition-transform duration-300" :class="{ 'rotate-180': expanded }" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Expandable Details -->
+                            <div x-show="expanded" x-collapse class="px-5 pb-5 border-t border-gray-200">
+                                <div class="pt-4 space-y-4">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div class="bg-white p-4 rounded-xl border border-gray-100">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Full Location</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ item.location }}</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-xl border border-gray-100">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Amount</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ item.amount }}</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-xl border border-gray-100">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Reporter</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ item.reporter.username }}</p>
+                                        </div>
+                                        <div class="bg-white p-4 rounded-xl border border-gray-100">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Collection Date</p>
+                                            <p class="text-sm font-semibold text-gray-900">{{ item.updated_at|date:"M d, Y - g:i A" }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if item.feedback %}
+                                        <div class="p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+                                            <p class="text-xs font-bold text-blue-800 mb-2 uppercase tracking-wider flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                                                Your Collection Notes
+                                            </p>
+                                            <p class="text-sm text-blue-700 font-medium italic">"{{ item.feedback.content }}"</p>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if item.status == 'REJECTED' and item.rejection_reason %}
+                                        <div class="p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                                            <p class="text-xs font-bold text-red-800 mb-2 uppercase tracking-wider flex items-center gap-1">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                                Rejection Reason
+                                            </p>
+                                            <p class="text-sm text-red-700 font-medium">"{{ item.rejection_reason }}"</p>
+                                        </div>
+                                    {% elif item.status == 'VERIFIED' %}
+                                        <div class="p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-lg">
+                                            <p class="text-xs font-bold text-emerald-800 mb-1 uppercase tracking-wider">Points Earned</p>
+                                            <p class="text-2xl font-black text-emerald-700">+20 Points</p>
+                                            <p class="text-xs text-emerald-600 mt-1">Successfully verified and added to your total</p>
+                                        </div>
+                                    {% endif %}
+                                    
+                                    {% if item.status == 'COLLECTED' %}
+                                        <div class="flex justify-end">
+                                            <form method="POST" class="inline" onsubmit="return confirm('Are you sure you want to cancel this collection? It will be returned to the open feed.');">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="cancel_report" value="1">
+                                                <input type="hidden" name="report_id" value="{{ item.id }}">
+                                                <button type="submit" class="px-4 py-2 bg-white border-2 border-red-200 text-red-600 font-bold hover:bg-red-600 hover:text-white hover:border-red-600 rounded-xl text-xs transition-all uppercase tracking-wider flex items-center gap-2">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                                    Cancel Collection
+                                                </button>
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-12 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200">
+                    <p class="text-gray-400 font-bold italic">Your history is currently empty.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Format Textarea Global style
+        const textareas = document.querySelectorAll('textarea');
+        textareas.forEach(el => {
+            el.classList.add(
+                'block', 'w-full', 'px-4', 'py-3', 'bg-white', 'border', 
+                'border-gray-200', 'rounded-xl', 'text-gray-900', 'font-medium',
+                'placeholder-gray-400', 'focus:outline-none', 'focus:ring-2', 
+                'focus:ring-blue-500/20', 'focus:border-blue-500',
+                'transition-all', 'shadow-sm', 'resize-none'
+            );
+            el.placeholder = "Include any necessary verification details...";
+            el.rows = 2;
+        });
+
+        // Add dynamic loader to collection button
+        const forms = document.querySelectorAll('.action-form');
+        forms.forEach(f => {
+            f.addEventListener('submit', function(e){
+                const btn = f.querySelector('.submit-action-btn');
+                btn.disabled = true;
+                btn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Submitting...`;
+            });
+        });
+
+        {% if my_collections %}
+            // Aggregate stats
+            const collections = [
+                {% for item in my_collections %}
+                    '{{ item.status }}',
+                {% endfor %}
+            ];
+
+            const statusCounts = collections.reduce((acc, curr) => {
+                acc[curr] = (acc[curr] || 0) + 1;
+                return acc;
+            }, { 'VERIFIED': 0, 'COLLECTED': 0, 'REJECTED': 0 });
+
+            const ctx = document.getElementById('collectorPerfChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [statusCounts['VERIFIED'], statusCounts['COLLECTED'], statusCounts['REJECTED']],
+                        backgroundColor: ['#10b981', '#3b82f6', '#ef4444'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const labels = ['Verified', 'Pending Review', 'Rejected'];
+                                    return labels[context.dataIndex] + ': ' + context.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        {% endif %}
+    });
+</script>
+
+{% endblock %}

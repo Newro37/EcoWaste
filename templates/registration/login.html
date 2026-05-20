@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}Login - EcoWaste{% endblock %}
+
+{% block content %}
+<div class="min-h-[85vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 relative overflow-hidden">
+    
+    <!-- Decorative background elements -->
+    <div class="absolute top-0 left-0 w-64 h-64 bg-emerald-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
+    <div class="absolute top-0 right-0 w-64 h-64 bg-teal-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+    <div class="absolute -bottom-8 left-20 w-64 h-64 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
+
+    <div class="max-w-md w-full relative z-10">
+        <div class="bg-white/80 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/50">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 mb-4 shadow-inner">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
+                </div>
+                <h2 class="text-3xl font-extrabold text-gray-900 tracking-tight">Welcome Back</h2>
+                <p class="text-gray-500 mt-2">Sign in to your EcoWaste account to continue.</p>
+            </div>
+            
+            <form class="space-y-6" method="POST">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="rounded-xl bg-red-50 p-4 border border-red-100 shadow-sm">
+                        <div class="text-sm text-red-700 font-medium">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="space-y-5">
+                    {% for field in form %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1">
+                                {{ field.label }}
+                            </label>
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                {{ field }}
+                            </div>
+                            {% if field.errors %}
+                                <p class="mt-1.5 text-xs font-medium text-red-600">{{ field.errors.as_text }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg text-white font-bold bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transform transition-all hover:-translate-y-0.5">
+                        Sign In
+                    </button>
+                </div>
+                
+                <div class="text-center mt-6">
+                    <p class="text-sm text-gray-600">
+                        Don't have an account? 
+                        <a href="{% url 'register' %}" class="font-bold text-emerald-600 hover:text-emerald-500 transition-colors">Register here</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .animate-blob { animation: blob 7s infinite; }
+    .animation-delay-2000 { animation-delay: 2s; }
+    .animation-delay-4000 { animation-delay: 4s; }
+    @keyframes blob {
+        0% { transform: translate(0px, 0px) scale(1); }
+        33% { transform: translate(30px, -50px) scale(1.1); }
+        66% { transform: translate(-20px, 20px) scale(0.9); }
+        100% { transform: translate(0px, 0px) scale(1); }
+    }
+</style>
+
+<script>
+    // Add Tailwind classes to Django form inputs
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('input[type="text"], input[type="password"]');
+        inputs.forEach(input => {
+            input.classList.add('appearance-none', 'block', 'w-full', 'px-4', 'py-3', 'border', 'border-gray-200', 'rounded-xl', 'text-gray-900', 'placeholder-gray-400', 'focus:outline-none', 'focus:ring-2', 'focus:ring-emerald-500', 'focus:border-transparent', 'transition-shadow', 'bg-white/50', 'backdrop-blur-sm');
+        });
+
+        // Add eye icon for password toggling
+        const passwordInputs = document.querySelectorAll('input[type="password"]');
+        passwordInputs.forEach(input => {
+            const container = input.parentElement;
+            if(container) {
+                input.classList.add('pr-12'); // Add right padding
+                
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 hover:text-emerald-600 focus:outline-none transition-colors';
+                
+                const eyeOpen = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>`;
+                const eyeClosed = `<svg class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg>`;
+                
+                btn.innerHTML = eyeOpen + eyeClosed;
+                
+                btn.addEventListener('click', function() {
+                    const isPassword = input.type === 'password';
+                    input.type = isPassword ? 'text' : 'password';
+                    btn.children[0].classList.toggle('hidden');
+                    btn.children[1].classList.toggle('hidden');
+                });
+                
+                container.appendChild(btn);
+            }
+        });
+    });
+</script>
+{% endblock %}
