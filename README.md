@@ -268,4 +268,7 @@ The following tests were performed:
 
 ## 📄 License
 
-This project was developed as an academic project for educational and research purposes.
+This project is part of the Web Based Application Project course at RUET, Department of CSE.
+
+Submitted by: Md. Nazmul Huda
+Supervisor: Prof. Dr. Boshir Ahmed, Professor, RUET
