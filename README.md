@@ -1,6 +1,13 @@
 # ♻️ EcoWaste - Web-Based Waste Management and Reporting System
 
+![Django](https://img.shields.io/badge/Django-4.x-green)
+![Python](https://img.shields.io/badge/Python-3.x-blue)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Frontend-38BDF8)
+![License](https://img.shields.io/badge/License-Educational-orange)
+
 EcoWaste is a community-driven waste management platform that enables citizens to report waste issues, waste collectors to manage cleanup tasks, and administrators to verify completed work. The system aims to improve environmental cleanliness through transparency, accountability, and gamification.
+
+---
 
 ## 📌 Project Overview
 
@@ -10,31 +17,38 @@ The platform uses a role-based workflow and reward system to encourage community
 
 ---
 
-## 🚀 Features
+## ✨ Key Features
 
-### 👤 User Roles
+### 👤 Multi-Role Authentication System
 
-#### Reporter (Citizen)
+* Reporter (Citizen)
+* Collector (Waste Worker)
+* Administrator
 
-* Register and log in securely
-* Report waste issues with location details
-* Track submitted reports
-* Earn points for verified reports
+### ♻️ Waste Reporting
 
-#### Collector (Waste Worker)
+* Submit waste reports
+* Add waste type and quantity
+* Specify waste location
+* Track report status
 
-* View available waste collection tasks
-* Claim pending reports
-* Mark tasks as collected
+### 🚛 Collection Management
+
+* View available collection requests
+* Claim cleanup tasks
 * Submit cleanup feedback
-* Earn points for verified collections
 
-#### Administrator
+### ✅ Verification Workflow
 
-* Approve collector accounts
-* Monitor system activities
-* Verify or reject collected reports
-* Manage report lifecycle
+* Admin verification and approval
+* Report rejection with reasons
+* Full report lifecycle tracking
+
+### 🏆 Gamification
+
+* Points-based reward system
+* Community engagement incentives
+* Performance tracking
 
 ---
 
@@ -61,37 +75,15 @@ Collector Claims Report
 
 ---
 
-## 🎯 Objectives
-
-* Provide a secure role-based waste reporting system.
-* Enable citizens to report waste easily.
-* Improve communication between citizens and waste collectors.
-* Introduce a gamified reward system.
-* Ensure accountability through administrative verification.
-* Promote environmental awareness and community engagement.
-
----
-
 ## 🛠 Technology Stack
 
-### Backend
-
-* Python 3
-* Django Framework
-
-### Frontend
-
-* HTML5
-* Tailwind CSS
-
-### Database
-
-* SQLite (Development)
-* PostgreSQL (Future Production Upgrade)
-
-### Version Control
-
-* Git
+| Category        | Technology          |
+| --------------- | ------------------- |
+| Backend         | Python, Django      |
+| Frontend        | HTML5, Tailwind CSS |
+| Database        | SQLite              |
+| Authentication  | Django Auth         |
+| Version Control | Git & GitHub        |
 
 ---
 
@@ -99,38 +91,23 @@ Collector Claims Report
 
 EcoWaste follows Django's **Model-View-Template (MVT)** architecture.
 
-### Core Components
+### Main Components
 
-#### CustomUser Model
+#### CustomUser
 
-Stores:
-
-* User Role
-
-  * REPORTER
-  * COLLECTOR
-  * ADMIN
-* Account Status
-
-  * PENDING
-  * APPROVED
+* Role Management
+* Approval Status
 * Reward Points
 
-#### WasteReport Model
-
-Stores:
+#### WasteReport
 
 * Waste Type
 * Location
 * Amount
-* Status
-* Reporter Information
-* Collector Information
-* Verification Information
+* Report Status
+* Reporter & Collector Information
 
-#### Feedback Model
-
-Stores:
+#### Feedback
 
 * Cleanup Notes
 * Collection Evidence
@@ -141,12 +118,10 @@ Stores:
 
 * Django Authentication System
 * Password Hashing
-* Role-Based Access Control
-* Custom Authorization Decorators
-* Session Protection
-* Dashboard Access Restrictions
-
-Example Authorization:
+* Session Management
+* Role-Based Authorization
+* Protected Routes
+* Custom Access Decorators
 
 ```python
 @reporter_required
@@ -167,108 +142,211 @@ def reporter_dashboard(request):
 
 ### Waste Reporting
 
-* Create waste reports
-* Specify waste type
-* Provide location details
+* Create Reports
+* Track Reports
+* Update Status
 
-### Task Management
+### Collection Management
 
-* View pending reports
-* Claim collection tasks
-* Submit collection feedback
+* Claim Tasks
+* Complete Collections
+* Submit Feedback
 
-### Verification
+### Administration
 
-* Approve completed cleanups
-* Reject invalid submissions
-* Provide rejection reasons
-
-### Gamification
-
-* Reward points for participation
-* Encourage community engagement
+* Verify Reports
+* Reject Invalid Reports
+* Manage Users
 
 ---
 
-## 🏆 Point System
+## 🏆 Reward System
 
-| Action                    | Points |
-| ------------------------- | ------ |
-| Successful Waste Report   | 10     |
-| Verified Waste Collection | 20     |
+| Action              | Points |
+| ------------------- | ------ |
+| Submit Waste Report | +10    |
+| Verified Cleanup    | +20    |
 
-The point system motivates users to actively participate in environmental cleanup efforts.
+The reward system motivates users to contribute actively toward maintaining a cleaner environment.
 
 ---
 
-## 📱 User Interface Features
+## 📱 User Interface
 
 * Responsive Design
-* Mobile-Friendly Layout
-* Glassmorphism UI Components
+* Mobile Friendly
+* Glassmorphism Effects
 * Smooth Animations
 * Tailwind CSS Styling
-* Template Inheritance Structure
+* Shared Template Inheritance
 
 ---
 
 ## 🧪 Testing
 
-The following tests were performed:
-
 ### Authentication Testing
 
-* Unauthorized users cannot access protected pages.
+✔ Protected pages require login
 
 ### Authorization Testing
 
-* Users cannot access dashboards outside their roles.
+✔ Role restrictions enforced
 
 ### Lifecycle Testing
 
-* Correct report status transitions.
+✔ Valid report status transitions
 
-### Point Allocation Testing
+### Reward Testing
 
-* Automatic reward assignment after verification.
-
----
-
-## 📈 Benefits
-
-* Improved waste management efficiency
-* Increased transparency
-* Community participation
-* Accountability through verification
-* Cleaner urban environments
+✔ Points allocated correctly
 
 ---
 
-## ⚠ Current Limitations
+## 📂 Project Structure
 
-* Manual report verification
-* No real-time GPS tracking
-* No route optimization
-* No smart-bin integration
-* No external reward/payment system
+```text
+EcoWaste/
+│
+├── accounts/
+│   ├── models.py
+│   ├── views.py
+│   └── forms.py
+│
+├── reports/
+│   ├── models.py
+│   ├── views.py
+│   └── templates/
+│
+├── dashboard/
+│   ├── views.py
+│   └── templates/
+│
+├── static/
+├── templates/
+├── db.sqlite3
+├── manage.py
+└── requirements.txt
+```
+
+---
+
+## ⚙️ Installation
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/yourusername/ecowaste.git
+cd ecowaste
+```
+
+### 2. Create Virtual Environment
+
+```bash
+python -m venv env
+```
+
+### 3. Activate Environment
+
+**Windows**
+
+```bash
+env\Scripts\activate
+```
+
+**Linux/Mac**
+
+```bash
+source env/bin/activate
+```
+
+### 4. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Apply Migrations
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 6. Run Server
+
+```bash
+python manage.py runserver
+```
+
+Visit:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## 📸 Screenshots
+
+Add screenshots here after deployment:
+
+* Home Page
+* Reporter Dashboard
+* Collector Dashboard
+* Admin Dashboard
+* Waste Report Form
 
 ---
 
 ## 🔮 Future Enhancements
 
-* AI-based waste detection from images
-* Google Maps integration
-* Route optimization for collectors
-* Smart waste-bin integration
-* Real-world reward redemption system
-* Mobile application development
+* AI-based Waste Detection
+* Google Maps Integration
+* Route Optimization
+* Smart Bin Monitoring
+* Mobile Application
+* Real-world Reward System
 
 ---
 
+## 📈 Benefits
+
+* Improved Waste Management
+* Increased Transparency
+* Community Participation
+* Better Accountability
+* Cleaner Urban Environment
+
+---
+
+## 👨‍💻 Author
+
+**Md. Nazmul Huda**
+Department of Computer Science & Engineering
+Rajshahi University of Engineering & Technology (RUET)
+
+---
+
+## 🎓 Academic Information
+
+**Course:** CSE 3100 – Web Based Application Project
+**Project:** EcoWaste – Web-Based Waste Management and Reporting System
+**Supervisor:** Prof. Dr. Boshir Ahmed
+
+---
 
 ## 📄 License
 
-This project is part of the Web Based Application Project course at RUET, Department of CSE.
+This project is part of the **Web Based Application Project** course at the **Department of Computer Science & Engineering, Rajshahi University of Engineering & Technology (RUET)**.
 
-Submitted by: Md. Nazmul Huda
-Supervisor: Prof. Dr. Boshir Ahmed, Professor, RUET
+
+**Submitted By:**
+Md. Nazmul Huda
+
+**Supervisor:**
+Prof. Dr. Boshir Ahmed
+Professor, Department of CSE
+Rajshahi University of Engineering & Technology (RUET)
+
+This project was developed for academic and educational purposes only.
+
