@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.admin import UserAdmin
 from .models import CustomUser
 
@@ -140,6 +141,12 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Reporter, ReporterAdmin)
 admin.site.register(Collector, CollectorAdmin)
 admin.site.register(AdminUser, AdminUserAdmin)
+
+for model in (Group, Permission):
+    try:
+        admin.site.unregister(model)
+    except admin.sites.NotRegistered:
+        pass
 
 # Customize admin site headers
 admin.site.site_header = "EcoWaste Administration"
